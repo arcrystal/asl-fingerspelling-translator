@@ -1,10 +1,8 @@
-Welcome Our ASL Translating Application
-==============================================
+ASL Translating Application
+===========================
 
 What's Here
 -----------
-
-This sample includes:
 
 * README.md - this file
 * requirements.txt - this file is used install Python dependencies needed by the Flask application
@@ -33,9 +31,9 @@ Getting Started
 
         $ pip install -r requirements.txt
 
-4. Move into src and export the application file
+4. Export the Flask application files:
 
-	$ export FLASK_APP=src/application
+        $ export FLASK_APP=src/application
 
 5. Start the Flask development server:
 
