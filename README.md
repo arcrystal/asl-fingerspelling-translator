@@ -9,7 +9,7 @@ This sample includes:
 * README.md - this file
 * requirements.txt - this file is used install Python dependencies needed by the Flask application
 * src/ - contains the source code for the Flask application
-* the models/ directory goes in src/. (If available) src/models/ - contains the translation model for the Flask application
+* src/models/ - contains the translation model for the Flask application
 * src/templates/ - contains the source code for the html running the Flask application's front end
 * src/static/ - contains static files used in the Flask application's front end
 * src/*.py - files running our ML system and Flask application's back end
