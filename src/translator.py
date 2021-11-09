@@ -2,16 +2,9 @@ import cv2
 import mediapipe as mp
 import pandas as pd
 import pickle
-import numpy as np
 import os
 import sys
 import string
-from collections import Counter
-import sklearn
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, accuracy_score
-from sklearn.preprocessing import StandardScaler
-from sklearn.utils import class_weight
 
 class Translator:
 
@@ -32,11 +25,10 @@ class Translator:
         # list of letters in Alphabet
         self.ALPHABET = list(string.ascii_uppercase)
 
-    def translate_video_stream(self):
+    def translate_video_stream(self, draw_handpoints=False):
         """
         Create video capture object to start video stream.
         Synchronously translates video stream.
-
         """
         prediction = None
         predictions = [None]
@@ -50,9 +42,9 @@ class Translator:
 
         cwd = os.getcwd().split("/")[-1]
         if cwd=="src":
-            rf = pickle.load(open("models/rf.sav", 'rb'))
+            rf = pickle.load(open(self.HERE + "models/rf.sav", 'rb'))
         elif cwd=="asl-fingerspelling-translator":
-            rf = pickle.load(open("src/models/rf.sav", 'rb'))
+            rf = pickle.load(open(self.HERE + "src/models/rf.sav", 'rb'))
         else:
             raise FileNotFoundError
 
@@ -89,7 +81,9 @@ class Translator:
             results = hands.process(imgRGB) #process image to look for hands
             if results.multi_hand_landmarks: #if there is a hand identified
                 for handLms in results.multi_hand_landmarks: #keep track of each x,y coordinate of points on hand
-                    mpDraw.draw_landmarks(img, handLms, mp.solutions.hands.HAND_CONNECTIONS) #draw points on hand
+
+                    if draw_handpoints:
+                        mpDraw.draw_landmarks(img, handLms, mp.solutions.hands.HAND_CONNECTIONS) #draw points on hand
 
                     X = []
                     Y = []
@@ -140,7 +134,7 @@ class Translator:
                         rowX_order.append(index)
                     elif "Y" in index:
                         rowY_order.append(index)
-                
+
                 if len(test) > 1:
                     # Check if x and y order changed
                     if (rowX_order == prev1_rowX_order) and (rowY_order == prev1_rowY_order) or \
@@ -191,6 +185,7 @@ class Translator:
             else:
                 test = pd.DataFrame(columns = self.hand_id_cols)
 
+            # TODO: making website translation frame scale with with size (currently static)
             if prediction is not None:
                 x = 250
                 y = 650
