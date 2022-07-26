@@ -41,10 +41,8 @@ class Translator:
         test = pd.DataFrame(columns = self.hand_id_cols) #start with an empty dataframe for group of frames
 
         cwd = os.getcwd().split("/")[-1]
-        if cwd=="src":
-            rf = pickle.load(open(self.HERE + "models/rf.sav", 'rb'))
-        elif cwd=="asl-fingerspelling-translator":
-            rf = pickle.load(open(self.HERE + "src/models/rf.sav", 'rb'))
+        if cwd=="asl-fingerspelling-translator":
+            rf = pickle.load(open(os.path.join(self.HERE, "models/rf.sav"), 'rb'))
         else:
             raise FileNotFoundError
 
@@ -76,7 +74,7 @@ class Translator:
             #Image boundaries
             boundaries = {'maxX': width,  'minX': 0,
                           'maxY': height, 'minY': 0}
-            
+
             imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) #convert image to RGB
             results = hands.process(imgRGB) #process image to look for hands
             if results.multi_hand_landmarks: #if there is a hand identified
@@ -100,15 +98,15 @@ class Translator:
                 minX = min(X)
                 maxZ = max(Z)
                 minZ = min(Z)
-                            
+
                 #scale X and Y to be on 0,1 scale in between min and max finger values
                 scaledX = [(x - minX) / (0.9*(maxX-minX)) for x in X]
                 scaledY = [(y - minY) / (0.9*(maxY-minY)) for y in Y]
                 scaledZ = [(z - minZ) / (0.9*(maxZ-minZ)) for z in Z]
-                
+
                 xRange = maxX - minX
                 yRange = maxY - minY
-                
+
                 # normalize min and max values to be on same scale as width, height
                 boundaries['maxY'] = int(maxY*height + 0.5*yRange)
                 boundaries['minY'] = int(minY*height - 0.5*yRange)
@@ -120,7 +118,7 @@ class Translator:
 
                 scaledX_tips = [scaledX[4],scaledX[8],scaledX[12],scaledX[16],scaledX[20]]
                 scaledY_tips = [scaledY[4],scaledY[8],scaledY[12],scaledY[16],scaledY[20]]
-                
+
                 tips = scaledX_tips + scaledY_tips
                 tipDf = pd.DataFrame([tips], columns = self.tip_cols)
 
@@ -163,7 +161,7 @@ class Translator:
 
                 else:
                     test = test.append(rowDf, ignore_index = True)
-                
+
                 prev5_rowX_order = prev4_rowX_order.copy()
                 prev5_rowY_order = prev4_rowY_order.copy()
                 prev4_rowX_order = prev3_rowX_order.copy()
@@ -174,7 +172,7 @@ class Translator:
                 prev2_rowY_order = prev1_rowY_order.copy()
                 prev_rowX_order = rowX_order.copy()
                 prev_rowY_order = rowY_order.copy()
-                
+
                 #set min and max values to video pixel limits if their values exceed those limits
                 for key in boundaries:
                     boundaries[key] = max(0, boundaries[key])
@@ -191,7 +189,7 @@ class Translator:
                 y = 650
                 # img = cv2.flip(img, 1)
                 cv2.putText(img, prediction, (x, y), self.FONT, 8, (0,0,255), 8)
-            
+
             ret, jpeg = cv2.imencode('.jpg', img)
             res = jpeg.tobytes()
             yield (b'--frame\r\n'
