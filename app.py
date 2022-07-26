@@ -1,6 +1,8 @@
 from flask import Flask, render_template, Response
 from translator import Translator
+from warnings import simplefilter
 
+simplefilter(action="ignore", category=UserWarning)
 app = Flask(__name__)
 translator = Translator()
 
