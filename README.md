@@ -8,16 +8,15 @@ What's Here
 * requirements.txt - used to install dependencies
 * src/ - source code for the Flask app
 * src/models/ - translation model(s) for the Flask app
-* src/templates/ - source code for Flask app's front end
+* src/templates/ - html templates for Flask app's front end
 * src/static/ - static files used in the Flask app's front end
-* src/*.py - files running our ML system and Flask application's back end
 
 Getting Started
 ---------------
 
 0. Navigate to project directory
 	
-	$ cd path/to/asl-fingerspelling-translator/src/
+	$ cd asl-fingerspelling-translator/
 
 1. Create a Python virtual environment for the application
 
