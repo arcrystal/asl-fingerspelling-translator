@@ -3,7 +3,6 @@ import mediapipe as mp
 import pandas as pd
 import pickle
 import os
-import sys
 import string
 
 class Translator:
@@ -41,7 +40,8 @@ class Translator:
         test = pd.DataFrame(columns = self.hand_id_cols) #start with an empty dataframe for group of frames
 
         cwd = os.getcwd().split("/")[-1]
-        if cwd=="asl-fingerspelling-translator":
+        if cwd=="asl-fingerspelling-translator-flask":
+            model_path = self.HERE + "models/rf.sav"
             rf = pickle.load(open(os.path.join(self.HERE, "models/rf.sav"), 'rb'))
         else:
             raise FileNotFoundError
