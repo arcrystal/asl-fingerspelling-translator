@@ -36,12 +36,3 @@ Getting Started
 
 5. Open http://127.0.0.1:5000/ in a web browser to view the output of your
    service.
-
-6. Check out the info below or reach out for more information!
-
-![alt text](./static/Slide1.png)
-![alt text](./static/Slide5.png)
-![alt text](./static/Slide6.png)
-![alt text](./static/Slide7.png)
-![alt text](./static/Slide10.png)
-![alt text](./static/Slide13.png)
