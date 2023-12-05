@@ -9,7 +9,6 @@ What's Here
 * src/ - source code for the Flask app
 * src/models/ - translation model(s) for the Flask app
 * src/templates/ - html templates for Flask app's front end
-* src/static/ - static files used in the Flask app's front end
 
 Getting Started
 ---------------
